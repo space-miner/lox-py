@@ -1,15 +1,11 @@
-import scanner
+from expr import *
+from tokentype import *
+from token import Token
+
 
 if __name__ == "__main__":
-    tests = [
-        "data.lox",
-        "add.lox",
-        "id.lox"
-    ]
-    for file_name in tests:
-        sc = scanner.Scanner("./tests/"+file_name)
-        sc.scan_tokens()
-        tokens = [str(token) for token in sc.token_list]
-        print(sc.source)
-        print('\n'.join(tokens))
-        print('\n')
+    left = Unary(Token(MINUS, "-", None, 1), Literal(123))
+    right = Grouping(Literal(45.67))
+    expr = Binary(left, Token(STAR, "*", None, 1), right)
+    print(expr)
+
