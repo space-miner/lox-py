@@ -14,6 +14,10 @@ class Parser():
     def __init__(self, token_list, current=0):
         self.token_list = token_list
         self.current = current
+    
+
+    def parse(self):
+        return self.expression()
 
 
     def expression(self):
