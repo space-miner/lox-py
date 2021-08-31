@@ -1,11 +1,11 @@
 from tokentype import *
 import expr
-
+import time
 
 literals = {
-    "FALSE": False,
-    "TRUE": True,
-    "NIL": None
+    FALSE: False,
+    TRUE: True,
+    NIL: None
     }
 
 
@@ -31,16 +31,18 @@ class Parser():
             operator = self.advance()
             right = self.comparison()
             left = expr.Binary(left, operator, right)
+            typ = self.peek().type
         return left
 
 
     def comparison(self):
         left = self.term()
         typ = self.peek().type
-        while typ in [GREATER, GREAT_EQUAL, LESS, LESS_EQUAL]:
+        while typ in [GREATER, GREATER_EQUAL, LESS, LESS_EQUAL]:
             operator = self.advance()
             right = self.term()
             left = expr.Binary(left, operator, right)
+            typ = self.peek().type
         return left
 
     
@@ -51,6 +53,7 @@ class Parser():
             operator = self.advance()
             right = self.factor()
             left = expr.Binary(left, operator, right)
+            typ = self.peek().type
         return left
 
     
@@ -61,6 +64,7 @@ class Parser():
             operator = self.advance()
             right = self.unary()
             left = expr.Binary(left, operator, right)
+            typ = self.peek().type
         return left
 
     
@@ -70,16 +74,16 @@ class Parser():
             operator = self.advance()
             right = self.unary()
             return expr.Unary(operator, right)
-        return primary()
+        return self.primary()
 
     
     def primary(self):
         typ = self.peek().type
         if typ in literals:
             value = literal[typ]
-            return expr.Literal.(value)
+            return expr.Literal(value)
         elif typ in [NUMBER, STRING]:
-            token = advance()
+            token = self.advance()
             return expr.Literal(token.literal)
         elif typ == LEFT_PAREN:
             exp = expression()

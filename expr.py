@@ -3,8 +3,7 @@ from token import Token
 
 
 class Expr(object):
-    def interpret():
-        pass
+    pass
 
 
 class Binary(Expr):
