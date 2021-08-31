@@ -6,4 +6,4 @@ from parser import Parser
 from interpreter import *
 
 if __name__ == "__main__":
-    
+    pass

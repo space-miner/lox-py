@@ -1,6 +1,6 @@
 from tokentype import *
 import expr
-import time
+
 
 literals = {
     FALSE: False,
