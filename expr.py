@@ -13,7 +13,7 @@ class Binary(Expr):
         self.right = right
 
     def __str__(self):
-        return f"({str(self.left)} {self.operator} {str(self.right)})"
+        return f"[{str(self.left)} {self.operator} {str(self.right)}]"
 
 
 class Grouping(Expr):
@@ -21,7 +21,7 @@ class Grouping(Expr):
         self.expression = expression
 
     def __str__(self):
-        return f"(({str(self.expression)}))"
+        return f"[({str(self.expression)})]"
 
 
 class Literal(Expr):
@@ -29,7 +29,7 @@ class Literal(Expr):
         self.value = value
 
     def __str__(self):
-        return f"({str(self.value)})"
+        return f"[{str(self.value)}]"
 
 
 class Unary(Expr):
@@ -38,4 +38,4 @@ class Unary(Expr):
         self.value = value
 
     def __str__(self):
-       return f"({self.operator} {str(self.value)})"
+       return f"[{self.operator} {str(self.value)}]"
