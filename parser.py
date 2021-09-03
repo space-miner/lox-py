@@ -1,5 +1,6 @@
 from tokentype import *
 import expr
+import stmt
 
 
 literals = {
@@ -14,10 +15,35 @@ class Parser():
     def __init__(self, token_list, current=0):
         self.token_list = token_list
         self.current = current
-    
+
 
     def parse(self):
-        return self.expression()
+        statement_list = []
+        while not self.is_at_end():
+            stmt = self.statement()
+            statement_list.append(stmt)
+        return statement_list
+
+
+    def statement(self):
+        typ = self.peek().type
+        if typ == PRINT:
+            return self.print_statement()
+        else:
+            return self.expression_statement()
+
+
+    def print_statement(self):
+        self.consume(PRINT)
+        expr = self.expression()
+        self.consume(SEMICOLON)
+        return stmt.Print(expr)
+
+
+    def expression_statement(self):
+        expr = self.expression()
+        self.consume(SEMICOLON)
+        return stmt.Expression(expr)
 
 
     def expression(self):
@@ -80,7 +106,8 @@ class Parser():
     def primary(self):
         typ = self.peek().type
         if typ in literals:
-            value = literal[typ]
+            value = literals[typ]
+            self.advance()
             return expr.Literal(value)
         elif typ in [NUMBER, STRING]:
             token = self.advance()
@@ -111,4 +138,5 @@ class Parser():
             return self.advance()
         else:
             token = self.peek()
-            print(f"line: {token.line}\t{token.type} != {typ}")
+            print(token)
+            print(f"line: {token.line}\t expected {typ} but got {token.type}")
