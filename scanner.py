@@ -2,7 +2,7 @@ from tokentype import *
 from token import Token
 
 
-whitespace = set([' ', '\r', '\t', '\n'])
+whitespace = set(" \r\t\n")
 
 
 digits = set("1234567890")
@@ -20,7 +20,7 @@ symbols = {
     ';': SEMICOLON,
     '/': SLASH,
     '*': STAR
-    }
+}
 
 
 relations = {
@@ -32,7 +32,7 @@ relations = {
     ">=": GREATER_EQUAL,
     '<': LESS,
     "<=": LESS_EQUAL
-    }
+}
 
 
 keywords = {
@@ -52,7 +52,8 @@ keywords = {
     "true": TRUE,
     "var": VAR,
     "while": WHILE
-    }
+}
+
 
 class Scanner:
 
@@ -61,7 +62,7 @@ class Scanner:
         self.token_list = token_list
         self.start = 0
         self.current = 0
-        self.line = 0
+        self.line = 1
 
 
     def scan_tokens(self):
