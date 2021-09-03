@@ -6,7 +6,7 @@ import operator
 unary_operator = {
     MINUS: operator.__neg__,
     BANG: operator.__not__
-    }
+}
 
 
 binary_operator = {
@@ -19,22 +19,22 @@ binary_operator = {
     LESS_EQUAL: operator.__le__,
     BANG_EQUAL: operator.__ne__,
     EQUAL_EQUAL: operator.__eq__
-    }
+}
 
 
 def interpret(e):
     if isinstance(e, expr.Literal):
         return e.value
     elif isinstance(e, expr.Grouping):
-        return interp(e.expression)
+        return interpret(e.expression)
     elif isinstance(e, expr.Unary):
-        right = interp(e.right)
+        right = interpret(e.right)
         operator = e.operator.type
         if unop := unary_operator.get(operator):
             return unop(right)
     elif isinstance(e, expr.Binary):
-        left = interp(e.left)
-        right = interp(e.right)
+        left = interpret(e.left)
+        right = interpret(e.right)
         operator = e.operator.type
         if binop := binary_operator.get(operator):
             return binop(left, right)
