@@ -19,3 +19,12 @@ class Print(Stmt):
 
     def __str__(self):
         return f"[print({self.expression})]"
+
+
+class Var(Stmt):
+    def __init__(self, identifier, expression):
+        self.identifier = identifier
+        self.expression = expression
+
+    def __str__(self):
+        return f"[var {identifier} = {expression}]"

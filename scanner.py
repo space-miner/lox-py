@@ -113,7 +113,7 @@ class Scanner:
 
     def add_token(self, token_type, literal=None):
         line = self.line
-        lexeme = self.source[self.start:self.current]
+        lexeme = self.source[self.start:self.current] if token_type != EOF else None
         token = Token(token_type, lexeme, literal, line)
         self.token_list.append(token)
     

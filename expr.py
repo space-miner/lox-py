@@ -39,3 +39,11 @@ class Unary(Expr):
 
     def __str__(self):
        return f"[{self.operator} {str(self.value)}]"
+
+
+class Variable(Expr):
+    def __init__(self, identifier):
+        self.identifier = identifier
+
+    def __str__(self):
+        return self.identifier

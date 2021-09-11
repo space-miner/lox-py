@@ -7,7 +7,7 @@ literals = {
     FALSE: False,
     TRUE: True,
     NIL: None
-    }
+}
 
 
 class Parser():
@@ -20,10 +20,30 @@ class Parser():
     def parse(self):
         statement_list = []
         while not self.is_at_end():
-            stmt = self.statement()
+            stmt = self.declaration()
             statement_list.append(stmt)
+        self.consume(EOF)
         return statement_list
 
+
+    def declaration(self):
+        typ = self.peek().type
+        if typ == VAR:
+            return self.variable_declaration()
+        else:
+            return self.statement()
+
+
+    def variable_declaration(self):
+        self.consume(VAR)
+        ident = self.advance()
+        expr = None
+        typ = self.peek().type
+        if typ == EQUAL:
+            self.consume(EQUAL)
+            expr = self.expression()
+        self.consume(SEMICOLON)
+        return stmt.Var(ident, expr)
 
     def statement(self):
         typ = self.peek().type
@@ -116,6 +136,9 @@ class Parser():
             exp = expression()
             consume(RIGHT_PAREN)
             return expr.Literal(exp)
+        elif typ == IDENTIFIER:
+            token = self.advance()
+            return expr.Variable(token.literal)
 
         
     def peek(self):
