@@ -56,14 +56,12 @@ keywords = {
 
 
 class Scanner:
-
     def __init__(self, source, token_list=[]):
         self.source = open(source, 'r').read()
         self.token_list = token_list
         self.start = 0
         self.current = 0
         self.line = 1
-
 
     def scan_tokens(self):
         while self.is_at_end() == False:
@@ -74,10 +72,8 @@ class Scanner:
         self.add_token(EOF)
         return self.token_list
 
-
     def is_at_end(self):
         return self.current >= len(self.source)
-
 
     def scan_token(self):
         ch = self.advance()
@@ -104,25 +100,21 @@ class Scanner:
         else:
             print(f"line: {self.line}\tunexpected character: {ch}")
 
-
     def advance(self):
         ch = self.source[self.current]
         self.current += 1
         return ch
-
 
     def add_token(self, token_type, literal=None):
         line = self.line
         lexeme = self.source[self.start:self.current] if token_type != EOF else None
         token = Token(token_type, lexeme, literal, line)
         self.token_list.append(token)
-    
 
     def peek(self):
         if self.is_at_end():
             return '\0'
         return self.source[self.current]
-
 
     def string(self):
         while self.is_at_end() == False and self.peek() != '"':
@@ -132,7 +124,6 @@ class Scanner:
         self.advance()   # closing " 
         literal = self.source[self.start:self.current]
         self.add_token(STRING, literal)
-
 
     def number(self):
         is_decimal = False
@@ -146,7 +137,6 @@ class Scanner:
         string_of_number = self.source[self.start:self.current]
         literal = float(string_of_number) if is_decimal else int(string_of_number)
         self.add_token(NUMBER, literal)
-
 
     def identifier(self):
         while self.peek().isalnum() or self.peek() == '_':
