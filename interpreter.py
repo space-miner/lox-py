@@ -1,6 +1,7 @@
 from tokentype import *
 import expr
 import operator
+import environment
 
 
 unary_operator = {
@@ -23,6 +24,7 @@ binary_operator = {
 
 
 def interpret(e):
+    environment = environment.Environment()
     if isinstance(e, expr.Literal):
         return e.value
     elif isinstance(e, expr.Grouping):
@@ -45,3 +47,9 @@ def interpret(e):
                 return left + right
             elif isinstance(left, str) and isinstance(right, str):
                 return left + right
+    elif isinstance(e, expr.Variable):
+        return environment.get(e.name)
+    elif isinstance(e, expr.Assign):
+        value = intepret(e.value)
+        environment.assign(e.name, value)
+        return value

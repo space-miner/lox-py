@@ -1,13 +1,27 @@
 class Environment:
-    def __init__(self):
+    def __init__(self, enclosing=None):
         self.values = {}
+        self.enclosing = enclosing
 
-    def define(identifier, value):
-        self.values[identifier] = value
+    def define(name, value):
+        self.values[name] = value
 
-    def get(identifier):
-        value = self.values.get(identifier)
-        if not value:
-            print(f"{identifier} was not found")
-        elif value:
+    def get(name):
+        value = self.values.get(name)
+        if value:
             return value
+        elif not value:
+            if self.enclosing:
+                return self.enclosing.get(name)
+            elif not self.enclosing:
+                print(f"{name} was not found")
+
+    def assign(name, value):
+        lexeme = name.lexeme
+        if lexeme in self.values:
+            self.values[lexeme] = value
+        elif lexeme not in self.values:
+            if self.enclosing:
+                self.enclosing.assign(name, value)
+            elif not self.enclosing:
+                print(f"undefined variable {lexeme}.")

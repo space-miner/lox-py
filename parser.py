@@ -67,7 +67,18 @@ class Parser():
 
 
     def expression(self):
-        return self.equality()
+        return self.assignment()
+
+
+    def assignment(self):
+        expr = self.equality()
+        typ = self.peek().type
+        if typ == EQUAL:
+            value = assignment()
+            if isinstance(expr, expr.Variable):
+                name = expr.name
+                return expr.Assign(name, value)
+        return expr
 
 
     def equality(self):
@@ -133,12 +144,12 @@ class Parser():
             token = self.advance()
             return expr.Literal(token.literal)
         elif typ == LEFT_PAREN:
-            exp = expression()
+            expr = expression()
             consume(RIGHT_PAREN)
-            return expr.Literal(exp)
+            return expr.Literal(expr)
         elif typ == IDENTIFIER:
             token = self.advance()
-            return expr.Variable(token.literal)
+            return expr.Variable(token)
 
         
     def peek(self):
