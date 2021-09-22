@@ -49,6 +49,8 @@ class Parser():
         typ = self.peek().type
         if typ == PRINT:
             return self.print_statement()
+        elif typ == LEFT_BRACE:
+            return stmt.Block(block())
         else:
             return self.expression_statement()
 
@@ -58,6 +60,14 @@ class Parser():
         expr = self.expression()
         self.consume(SEMICOLON)
         return stmt.Print(expr)
+
+    
+    def block(self):
+        statements = []
+        while not self.is_at_end() and self.peek.type != RIGHT_BRACE:
+            statements.append(self.declaration())
+        self.consume(RIGHT_BRACE)
+        return statements
 
 
     def expression_statement(self):
