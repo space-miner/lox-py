@@ -86,5 +86,13 @@ class Interpreter:
         finally:
             this.environment = previous_environment
 
+    def execute_if(self, if_statement):
+        if evalute(if_statement.condition):
+            self.execute(if_statement.then_branch)
+        else:
+            self.execute(if_statement.else_branch)
+
     def execute(self, statement):
-        pass
+        if isinstance(statement, stmt.Block):
+            block = statement
+            self.execute_block(block.statements, self.environment)

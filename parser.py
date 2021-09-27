@@ -50,7 +50,9 @@ class Parser():
         if typ == PRINT:
             return self.print_statement()
         elif typ == LEFT_BRACE:
-            return stmt.Block(block())
+            return self.block()
+        elif typ == IF:
+            return self.if_statement()
         else:
             return self.expression_statement()
 
@@ -61,13 +63,26 @@ class Parser():
         self.consume(SEMICOLON)
         return stmt.Print(expr)
 
-    
+
     def block(self):
         statements = []
-        while not self.is_at_end() and self.peek.type != RIGHT_BRACE:
+        while not self.is_at_end() and self.peek().type != RIGHT_BRACE:
             statements.append(self.declaration())
         self.consume(RIGHT_BRACE)
-        return statements
+        return stmt.Block(statements)
+        
+        
+    def if_statement(self):
+        self.consume(IF)
+        self.consume(LEFT_PAREN)
+        condition = self.expression()
+        self.consume(RIGHT_PAREN)
+        then_branch = self.statement()
+        else_brach = None
+        if self.peek().type == ELSE:
+            self.consume(ELSE)
+            else_branch = self.statement()
+        return expr.If(condition, then_branch, else_branch)
 
 
     def expression_statement(self):
@@ -80,6 +95,7 @@ class Parser():
         return self.assignment()
 
 
+    # TODO: unfinished
     def assignment(self):
         expr = self.equality()
         typ = self.peek().type
@@ -89,6 +105,20 @@ class Parser():
                 name = expr.name
                 return expr.Assign(name, value)
         return expr
+
+
+    # TODO: unfinished
+    def logic_or(self):
+        self.logic_and()
+        while self.peek().type == OR:
+            self.logic_and()
+
+
+    # TODO: unfinished
+    def logic_and(self):
+        self.equality()
+        while self.peek().type == AND:
+            self.equality()
 
 
     def equality(self):

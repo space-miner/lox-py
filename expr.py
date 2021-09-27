@@ -56,3 +56,13 @@ class Variable(Expr):
 
     def __str__(self):
         return f"[{self.name}]"
+
+
+class If(Expr):
+    def __init__(self, condition, then_branch, else_branch):
+        self.condition = condition
+        self.then_branch = then_branch
+        self.else_branch = else_branch
+
+    def __str__(self):
+        return f"[if {self.condition} then {then_branch} else {else_branch}]"
